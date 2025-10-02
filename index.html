@@ -64,19 +64,32 @@
         }
         
         .logo {
-            width: 200px;
-            height: 60px;
-            margin: 0 auto 20px;
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 25px;
             display: flex;
             align-items: center;
             justify-content: center;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(30, 58, 138, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 35px rgba(30, 58, 138, 0.3);
         }
         
         .logo img {
             width: 100%;
             height: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0 4px 8px rgba(30, 58, 138, 0.3));
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo:hover img {
+            transform: scale(1.1);
         }
         
         h1 {
@@ -304,8 +317,8 @@
             }
             
             .logo {
-                width: 160px;
-                height: 48px;
+                width: 120px;
+                height: 120px;
             }
             
             .option-card {
@@ -344,7 +357,7 @@
 <body>
     <div class="portal-container">
         <div class="logo">
-            <img src="logo-innovamanager.svg" alt="InnovaManager Logo" onerror="this.src='logo.png'">
+            <img src="logo.png" alt="InnovaManager Logo">
         </div>
         <h1>InnovaManager for ADSO</h1>
         <p class="subtitle">Plataforma de Gestión Innovadora</p>

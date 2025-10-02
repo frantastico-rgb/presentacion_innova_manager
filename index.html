@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InnovaManager - Portal de Acceso</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .portal-container {
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        .logo {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2.5em;
+        }
+        
+        h1 {
+            color: #1e3a8a;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 50px;
+            font-size: 1.2em;
+        }
+        
+        .access-options {
+            display: grid;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .option-card {
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border: 2px solid #e5e7eb;
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .option-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            border-color: #3b82f6;
+        }
+        
+        .option-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        
+        .option-title {
+            color: #1e3a8a;
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .option-description {
+            color: #6b7280;
+            font-size: 1em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #3b82f6, #1e3a8a);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        .footer-info {
+            background: #f8fafc;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 30px;
+            text-align: left;
+            color: #374151;
+            font-size: 0.95em;
+        }
+    </style>
+</head>
+<body>
+    <div class="portal-container">
+        <div class="logo">🚀</div>
+        <h1>InnovaManager for ADSO</h1>
+        <p class="subtitle">"Innovación y gestión en un mismo lugar"</p>
+        
+        <div class="access-options">
+            <!-- Opción para clientes con código -->
+            <div class="option-card">
+                <div class="option-icon">🔐</div>
+                <div class="option-title">Acceso de Cliente</div>
+                <div class="option-description">
+                    ¿Ya tuviste una reunión con nuestro equipo? Ingresa con tu código personalizado para acceder a tu presentación exclusiva.
+                </div>
+                <a href="acceso-restringido.html" class="btn" onclick="event.stopPropagation()">🔓 Ingresar con Código</a>
+            </div>
+            
+            <!-- Opción para equipo interno -->
+            <div class="option-card">
+                <div class="option-icon">👥</div>
+                <div class="option-title">Acceso Interno</div>
+                <div class="option-description">
+                    Acceso directo para el equipo de InnovaManager para preparar presentaciones y demostraciones.
+                </div>
+                <a href="presentacion-innovamanager.html" class="btn btn-secondary" onclick="event.stopPropagation()">⚡ Acceso Directo</a>
+            </div>
+        </div>
+        
+        <div class="footer-info">
+            <h3 style="color: #1e3a8a; margin-bottom: 15px;">📞 Información de Contacto</h3>
+            <p><strong>¿Primera vez aquí?</strong> Contacta a nuestro equipo comercial:</p>
+            <p>📧 <strong>Email:</strong> comercial@innovamanager.com</p>
+            <p>📱 <strong>WhatsApp:</strong> +57 300 123 4567</p>
+            <p>☎️ <strong>Teléfono:</strong> +57 (1) 234-5678</p>
+            <hr style="margin: 20px 0; border: 1px solid #e5e7eb;">
+            <p style="font-size: 0.9em; color: #6b7280;">
+                <strong>Nota:</strong> Las presentaciones con código contienen información comercial personalizada según los requerimientos discutidos en reuniones previas.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

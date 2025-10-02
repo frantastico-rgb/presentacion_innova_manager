@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso Restringido - InnovaManager</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2em;
+        }
+        
+        h1 {
+            color: #1e3a8a;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+        
+        .access-form {
+            margin-bottom: 30px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .btn {
+            width: 100%;
+            background: linear-gradient(135deg, #3b82f6, #1e3a8a);
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        .error {
+            background: #fef2f2;
+            color: #dc2626;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: none;
+        }
+        
+        .info-section {
+            background: #f8fafc;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 30px;
+            text-align: left;
+        }
+        
+        .contact-info {
+            color: #374151;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+        
+        .contact-info strong {
+            color: #1e3a8a;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">🚀</div>
+        <h1>InnovaManager for ADSO</h1>
+        <p class="subtitle">Acceso Restringido - Solo Clientes Autorizados</p>
+        
+        <div class="access-form">
+            <input type="password" id="accessCode" placeholder="Ingrese su código de acceso" maxlength="20">
+            <button class="btn" onclick="validateAccess()">🔓 Acceder a la Presentación</button>
+            <div class="error" id="errorMessage">
+                ❌ Código incorrecto. Contacte a su ejecutivo de cuenta.
+            </div>
+        </div>
+        
+        <div class="info-section">
+            <h3 style="color: #1e3a8a; margin-bottom: 15px;">📞 ¿No tienes código de acceso?</h3>
+            <div class="contact-info">
+                <p><strong>Solicita tu código personalizado:</strong></p>
+                <p>📧 <strong>Email:</strong> comercial@innovamanager.com</p>
+                <p>📱 <strong>WhatsApp:</strong> +57 300 123 4567</p>
+                <p>☎️ <strong>Teléfono:</strong> +57 (1) 234-5678</p>
+                <br>
+                <p style="font-size: 0.9em; color: #6b7280;">
+                    <strong>Nota:</strong> Esta presentación contiene información comercial sensible y está personalizada según los requerimientos discutidos en su reunión previa.
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Códigos de acceso con vigencia (en producción, esto iría en un backend)
+        const accessCodes = {
+            'INGENIERIAPP2024': {
+                url: 'presentacion-innovamanager.html',
+                createdDate: '2024-10-01',  // Fecha de creación
+                validDays: 7,               // Días de vigencia
+                clientName: 'Ingenieriapp'
+            },
+            'INGENIERIA2025': {
+                url: 'presentacion-innovamanager.html',
+                createdDate: '2025-10-01',  // Código nuevo generado
+                validDays: 7,
+                clientName: 'ingenieriapp'
+            },
+            'DEMO2024': {
+                url: 'presentacion-innovamanager.html',
+                createdDate: '2024-10-01',
+                validDays: 30,              // Demo tiene más tiempo
+                clientName: 'Demo'
+            },
+            'TECHCORP2024': {
+                url: 'presentacion-innovamanager.html',
+                createdDate: '2024-09-25',  // Código más antiguo
+                validDays: 7,
+                clientName: 'TechCorp'
+            },
+            'CLIENTE001': {
+                url: 'presentacion-innovamanager.html',
+                createdDate: '2024-09-20',  // Código expirado
+                validDays: 5,
+                clientName: 'Cliente 001'
+            },
+            'ADSO2025': {
+                url: 'presentacion-innovamanager.html',
+                createdDate: '2025-10-01',  // Código académico especial
+                validDays: 90,              // 3 meses para evaluaciones
+                clientName: 'SENA ADSO - Presentación Académica'
+            },
+            'EVALUACION2025': {
+                url: 'presentacion-innovamanager.html',
+                createdDate: '2025-10-01',  // Para jurados/profesores
+                validDays: 30,
+                clientName: 'Evaluación Académica'
+            }
+        };
+
+        // Función para verificar si un código está vigente
+        function isCodeValid(codeData) {
+            const createdDate = new Date(codeData.createdDate);
+            const currentDate = new Date();
+            const daysPassed = Math.floor((currentDate - createdDate) / (1000 * 60 * 60 * 24));
+            
+            return daysPassed <= codeData.validDays;
+        }
+
+        // Función para calcular días restantes
+        function getDaysRemaining(codeData) {
+            const createdDate = new Date(codeData.createdDate);
+            const currentDate = new Date();
+            const daysPassed = Math.floor((currentDate - createdDate) / (1000 * 60 * 60 * 24));
+            
+            return Math.max(0, codeData.validDays - daysPassed);
+        }
+        
+        function validateAccess() {
+            const code = document.getElementById('accessCode').value.toUpperCase();
+            const errorDiv = document.getElementById('errorMessage');
+            const codeData = accessCodes[code];
+            
+            if (codeData) {
+                // Verificar si el código está vigente
+                if (isCodeValid(codeData)) {
+                    // Mostrar días restantes antes de redirigir
+                    const daysRemaining = getDaysRemaining(codeData);
+                    if (daysRemaining <= 2) {
+                        alert(`⚠️ ATENCIÓN: Su acceso expira en ${daysRemaining} día${daysRemaining !== 1 ? 's' : ''}.\n\nContacte a su ejecutivo de cuenta para renovar.`);
+                    }
+                    
+                    // Código válido y vigente - redirigir a la presentación
+                    logAccess(code, true, `Acceso exitoso - ${daysRemaining} días restantes`);
+                    window.location.href = codeData.url;
+                } else {
+                    // Código expirado
+                    errorDiv.innerHTML = `❌ Su código de acceso ha expirado.<br>📞 Contacte a su ejecutivo para renovar: <strong>+57 300 123 4567</strong>`;
+                    errorDiv.style.display = 'block';
+                    document.getElementById('accessCode').style.borderColor = '#dc2626';
+                    logAccess(code, false, 'Código expirado');
+                }
+            } else {
+                // Código inválido
+                errorDiv.innerHTML = '❌ Código incorrecto. Contacte a su ejecutivo de cuenta.';
+                errorDiv.style.display = 'block';
+                document.getElementById('accessCode').style.borderColor = '#dc2626';
+                logAccess(code, false, 'Código inválido');
+            }
+            
+            // Limpiar error después de 5 segundos
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+                document.getElementById('accessCode').style.borderColor = '#e5e7eb';
+            }, 5000);
+        }
+        
+        // Permitir presionar Enter para enviar
+        document.getElementById('accessCode').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                validateAccess();
+            }
+        });
+        
+        // Generar código único para cada cliente (función de utilidad)
+        function generateClientCode(clientName) {
+            const clean = clientName.toUpperCase().replace(/[^A-Z]/g, '');
+            const year = new Date().getFullYear();
+            return clean.substring(0, 8) + year;
+        }
+        
+        // Log de accesos (en producción, esto iría al servidor)
+        function logAccess(code, success, details) {
+            const timestamp = new Date().toISOString();
+            const clientName = accessCodes[code] ? accessCodes[code].clientName : 'Desconocido';
+            
+            console.log(`[${timestamp}] Cliente: ${clientName} | Código: ${code} | ${success ? 'ÉXITO' : 'FALLO'} | ${details}`);
+            
+            // En producción, aquí enviarías al servidor para tracking
+            // sendToServer({ timestamp, clientName, code, success, details });
+        }
+
+        // Función para generar código con vigencia personalizada
+        function generateClientAccess(clientName, validDays = 7) {
+            const cleanName = clientName.toUpperCase().replace(/[^A-Z0-9]/g, '').substring(0, 10);
+            const year = new Date().getFullYear();
+            const code = `${cleanName}${year}`;
+            const createdDate = new Date().toISOString().split('T')[0];
+            
+            return {
+                code: code,
+                data: {
+                    url: 'presentacion-innovamanager.html',
+                    createdDate: createdDate,
+                    validDays: validDays,
+                    clientName: clientName
+                }
+            };
+        }
+    </script>
+</body>
+</html>

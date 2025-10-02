@@ -1,0 +1,29 @@
+# 🚫 Archivos que NO subir a GitHub
+
+## Copias de seguridad
+*.backup
+*.bak
+*~
+
+## Archivos temporales del sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+
+## Archivos de VS Code (opcionales)
+.vscode/settings.json
+.vscode/launch.json
+
+## Archivos grandes innecesarios (si los tienes)
+*.zip
+*.rar
+*.7z
+
+## Logs y cache
+*.log
+node_modules/
+.cache/
+
+# Nota: Este .gitignore es conservador
+# Solo excluye archivos que realmente no necesitas en GitHub

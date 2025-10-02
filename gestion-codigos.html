@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Códigos de Acceso - InnovaManager</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            margin: 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            color: #1e3a8a;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .panel {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 30px;
+        }
+        
+        .panel h3 {
+            color: #1e3a8a;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            color: #374151;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #3b82f6, #1e3a8a);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        .codes-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .codes-table th,
+        .codes-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .codes-table th {
+            background: #f3f4f6;
+            color: #374151;
+            font-weight: 600;
+        }
+        
+        .status-active {
+            color: #059669;
+            font-weight: bold;
+        }
+        
+        .status-expired {
+            color: #dc2626;
+            font-weight: bold;
+        }
+        
+        .status-warning {
+            color: #d97706;
+            font-weight: bold;
+        }
+        
+        .generated-code {
+            background: #10b981;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-family: monospace;
+            font-size: 18px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+                <h1>🔐 Gestión de Códigos de Acceso</h1>
+        
+        <div class="dashboard">
+            <!-- Panel de generación -->
+            <div class="panel">
+                <h3>➕ Generar Nuevo Código</h3>
+                
+                <div class="form-group">
+                    <label>Nombre del Cliente</label>
+                    <input type="text" id="clientName" placeholder="Ej: Ingenieriapp">
+                </div>
+                
+                <div class="form-group">
+                    <label>Días de Vigencia</label>
+                    <select id="validDays">
+                        <option value="3">3 días (Urgente)</option>
+                        <option value="7" selected>7 días (Estándar)</option>
+                        <option value="14">14 días (Extendido)</option>
+                        <option value="30">30 días (Demo)</option>
+                    </select>
+                </div>
+                
+                <button class="btn" onclick="generateNewCode()">🔑 Generar Código</button>
+                
+                <div id="generatedCode" style="display: none;">
+                    <div class="generated-code">
+                        <div>Código generado:</div>
+                        <div id="newCodeDisplay"></div>
+                        <div style="font-size: 14px; margin-top: 10px;">
+                            Válido hasta: <span id="expirationDate"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Panel de estadísticas -->
+            <div class="panel">
+                <h3>📊 Estadísticas</h3>
+                <div id="stats">
+                    <p>📈 <strong>Códigos activos:</strong> <span id="activeCount">0</span></p>
+                    <p>⚠️ <strong>Por expirar (≤2 días):</strong> <span id="warningCount">0</span></p>
+                    <p>❌ <strong>Expirados:</strong> <span id="expiredCount">0</span></p>
+                    <p>📊 <strong>Total generados:</strong> <span id="totalCount">0</span></p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tabla de códigos -->
+        <h3>📋 Códigos Existentes</h3>
+        <table class="codes-table" id="codesTable">
+            <thead>
+                <tr>
+                    <th>Cliente</th>
+                    <th>Código</th>
+                    <th>Creado</th>
+                    <th>Vigencia</th>
+                    <th>Días Restantes</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="codesTableBody">
+            </tbody>
+        </table>
+    </div>
+    
+    <script>
+        // Datos de códigos (en producción vendría del servidor)
+        const accessCodes = {
+            'INGENIERIAPP2024': {
+                url: 'presentacion-innovamanager.html',
+                createdDate: '2024-10-01',
+                validDays: 7,
+                clientName: 'Ingenieriapp'
+            },
+            'DEMO2024': {
+                url: 'presentacion-innovamanager.html',
+                createdDate: '2024-10-01',
+                validDays: 30,
+                clientName: 'Demo'
+            },
+            'TECHCORP2024': {
+                url: 'presentacion-innovamanager.html',
+                createdDate: '2024-09-25',
+                validDays: 7,
+                clientName: 'TechCorp'
+            },
+            'CLIENTE0012024': {
+                url: 'presentacion-innovamanager.html',
+                createdDate: '2024-09-20',
+                validDays: 5,
+                clientName: 'Cliente 001'
+            }
+        };
+        
+        function isCodeValid(codeData) {
+            const createdDate = new Date(codeData.createdDate);
+            const currentDate = new Date();
+            const daysPassed = Math.floor((currentDate - createdDate) / (1000 * 60 * 60 * 24));
+            return daysPassed <= codeData.validDays;
+        }
+        
+        function getDaysRemaining(codeData) {
+            const createdDate = new Date(codeData.createdDate);
+            const currentDate = new Date();
+            const daysPassed = Math.floor((currentDate - createdDate) / (1000 * 60 * 60 * 24));
+            return Math.max(0, codeData.validDays - daysPassed);
+        }
+        
+        function getExpirationDate(codeData) {
+            const createdDate = new Date(codeData.createdDate);
+            const expirationDate = new Date(createdDate);
+            expirationDate.setDate(createdDate.getDate() + codeData.validDays);
+            return expirationDate.toLocaleDateString('es-ES');
+        }
+        
+        function generateNewCode() {
+            const clientName = document.getElementById('clientName').value.trim();
+            const validDays = parseInt(document.getElementById('validDays').value);
+            
+            if (!clientName) {
+                alert('Por favor ingrese el nombre del cliente');
+                return;
+            }
+            
+            const cleanName = clientName.toUpperCase().replace(/[^A-Z0-9]/g, '').substring(0, 10);
+            const year = new Date().getFullYear();
+            const code = `${cleanName}${year}`;
+            const createdDate = new Date().toISOString().split('T')[0];
+            
+            // Agregar al objeto de códigos
+            accessCodes[code] = {
+                url: 'presentacion-innovamanager.html',
+                createdDate: createdDate,
+                validDays: validDays,
+                clientName: clientName
+            };
+            
+            // Mostrar código generado
+            document.getElementById('newCodeDisplay').textContent = code;
+            
+            const expirationDate = new Date();
+            expirationDate.setDate(expirationDate.getDate() + validDays);
+            document.getElementById('expirationDate').textContent = expirationDate.toLocaleDateString('es-ES');
+            
+            document.getElementById('generatedCode').style.display = 'block';
+            
+            // Actualizar tabla y estadísticas
+            updateTable();
+            updateStats();
+            
+            // Limpiar formulario
+            document.getElementById('clientName').value = '';
+        }
+        
+        function updateTable() {
+            const tbody = document.getElementById('codesTableBody');
+            tbody.innerHTML = '';
+            
+            Object.entries(accessCodes).forEach(([code, data]) => {
+                const daysRemaining = getDaysRemaining(data);
+                const isValid = isCodeValid(data);
+                
+                let statusClass, statusText;
+                if (!isValid) {
+                    statusClass = 'status-expired';
+                    statusText = 'Expirado';
+                } else if (daysRemaining <= 2) {
+                    statusClass = 'status-warning';
+                    statusText = 'Por expirar';
+                } else {
+                    statusClass = 'status-active';
+                    statusText = 'Activo';
+                }
+                
+                const row = `
+                    <tr>
+                        <td>${data.clientName}</td>
+                        <td><strong>${code}</strong></td>
+                        <td>${new Date(data.createdDate).toLocaleDateString('es-ES')}</td>
+                        <td>${data.validDays} días</td>
+                        <td>${daysRemaining}</td>
+                        <td class="${statusClass}">${statusText}</td>
+                        <td>
+                            <button class="btn" onclick="extendCode('${code}')" ${!isValid ? 'disabled' : ''}>
+                                📅 Extender
+                            </button>
+                            <button class="btn" onclick="copyCode('${code}')">
+                                📋 Copiar
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+        
+        function updateStats() {
+            let active = 0, warning = 0, expired = 0;
+            
+            Object.values(accessCodes).forEach(data => {
+                const daysRemaining = getDaysRemaining(data);
+                const isValid = isCodeValid(data);
+                
+                if (!isValid) {
+                    expired++;
+                } else if (daysRemaining <= 2) {
+                    warning++;
+                } else {
+                    active++;
+                }
+            });
+            
+            document.getElementById('activeCount').textContent = active;
+            document.getElementById('warningCount').textContent = warning;
+            document.getElementById('expiredCount').textContent = expired;
+            document.getElementById('totalCount').textContent = Object.keys(accessCodes).length;
+        }
+        
+        function extendCode(code) {
+            const days = prompt('¿Cuántos días adicionales?', '7');
+            if (days && !isNaN(days)) {
+                accessCodes[code].validDays += parseInt(days);
+                alert(`Código ${code} extendido por ${days} días adicionales`);
+                updateTable();
+                updateStats();
+            }
+        }
+        
+        function copyCode(code) {
+            navigator.clipboard.writeText(code).then(() => {
+                alert(`Código ${code} copiado al portapapeles`);
+            });
+        }
+        
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', () => {
+            updateTable();
+            updateStats();
+        });
+    </script>
+</body>
+</html>

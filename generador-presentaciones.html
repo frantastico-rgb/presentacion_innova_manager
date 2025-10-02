@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Presentaciones - InnovaManager</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            margin: 0;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            color: #1e3a8a;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            color: #374151;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #3b82f6, #1e3a8a);
+            color: white;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        .preview {
+            background: #f3f4f6;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+            font-family: monospace;
+            font-size: 14px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Generador de Presentaciones</h1>
+        <p style="text-align: center; color: #6b7280; margin-bottom: 40px;">
+            Completa los datos para generar una presentación personalizada
+        </p>
+        
+        <form id="presentationForm">
+            <div class="form-group">
+                <label>Nombre del Cliente</label>
+                <input type="text" id="cliente" placeholder="Ej: TechCorp S.A.S" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Representante Legal</label>
+                <input type="text" id="representante" placeholder="Ej: Dr. Juan Pérez" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Nombre del Proyecto</label>
+                <input type="text" id="proyecto" placeholder="Ej: Sistema de Inventario Inteligente" required>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Sector/Industria</label>
+                    <select id="sector" onchange="updateDefaults()">
+                        <option value="software">Software & Tecnología</option>
+                        <option value="retail">Retail & Comercio</option>
+                        <option value="manufactura">Manufactura</option>
+                        <option value="servicios">Servicios</option>
+                        <option value="salud">Salud</option>
+                        <option value="educacion">Educación</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Inversión Total (USD)</label>
+                    <input type="number" id="inversion" placeholder="8500" required>
+                </div>
+            </div>
+            
+            <h3 style="color: #1e3a8a; margin: 30px 0 20px 0;">📊 Datos para ROI</h3>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Número de Empleados</label>
+                    <input type="number" id="empleados" placeholder="15">
+                </div>
+                
+                <div class="form-group">
+                    <label>Proyectos Mensuales</label>
+                    <input type="number" id="proyectos" placeholder="8">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Horas Semanales Manuales</label>
+                    <input type="number" id="horas" placeholder="20">
+                </div>
+                
+                <div class="form-group">
+                    <label>Costo por Hora (USD)</label>
+                    <input type="number" id="costoHora" placeholder="15">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Eficiencia Esperada (%)</label>
+                <input type="number" id="eficiencia" placeholder="80" min="50" max="95">
+                <small style="color: #6b7280;">¿Qué porcentaje del trabajo manual se automatizará?</small>
+            </div>
+            
+            <div class="form-group">
+                <label>Stack Tecnológico Principal</label>
+                <textarea id="tecnologias" rows="3" placeholder="Ej: React, Node.js, PostgreSQL, AWS"></textarea>
+            </div>
+            
+            <button type="submit" class="btn">
+                🎯 Generar Presentación Personalizada
+            </button>
+        </form>
+        
+        <div id="instructions" class="preview" style="display: none;">
+            <h4>📋 Instrucciones para aplicar los cambios:</h4>
+            <div id="changesList"></div>
+        </div>
+    </div>
+    
+    <script>
+        const sectorDefaults = {
+            software: { empleados: 15, proyectos: 8, horas: 20, costoHora: 20, eficiencia: 80, inversion: 12000 },
+            retail: { empleados: 25, proyectos: 12, horas: 25, costoHora: 12, eficiencia: 70, inversion: 8000 },
+            manufactura: { empleados: 50, proyectos: 6, horas: 30, costoHora: 15, eficiencia: 75, inversion: 15000 },
+            servicios: { empleados: 20, proyectos: 10, horas: 22, costoHora: 18, eficiencia: 78, inversion: 10000 },
+            salud: { empleados: 30, proyectos: 5, horas: 25, costoHora: 25, eficiencia: 85, inversion: 18000 },
+            educacion: { empleados: 40, proyectos: 15, horas: 20, costoHora: 14, eficiencia: 75, inversion: 9000 }
+        };
+        
+        function updateDefaults() {
+            const sector = document.getElementById('sector').value;
+            const defaults = sectorDefaults[sector];
+            
+            document.getElementById('empleados').value = defaults.empleados;
+            document.getElementById('proyectos').value = defaults.proyectos;
+            document.getElementById('horas').value = defaults.horas;
+            document.getElementById('costoHora').value = defaults.costoHora;
+            document.getElementById('eficiencia').value = defaults.eficiencia;
+            document.getElementById('inversion').value = defaults.inversion;
+        }
+        
+        document.getElementById('presentationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const data = {
+                cliente: document.getElementById('cliente').value,
+                representante: document.getElementById('representante').value,
+                proyecto: document.getElementById('proyecto').value,
+                sector: document.getElementById('sector').value,
+                inversion: document.getElementById('inversion').value,
+                empleados: document.getElementById('empleados').value,
+                proyectos: document.getElementById('proyectos').value,
+                horas: document.getElementById('horas').value,
+                costoHora: document.getElementById('costoHora').value,
+                eficiencia: document.getElementById('eficiencia').value,
+                tecnologias: document.getElementById('tecnologias').value
+            };
+            
+            generateInstructions(data);
+        });
+        
+        function generateInstructions(data) {
+            const instructions = `
+1. 🏢 CAMBIAR INFORMACIÓN DEL CLIENTE:
+   - Buscar: "Ingenieriapp" → Reemplazar por: "${data.cliente}"
+   - Buscar: "Ing. Carolina Quevedo Benítez" → Reemplazar por: "${data.representante}"
+   - Buscar: "App de Gestión de Proyectos y Empleados" → Reemplazar por: "${data.proyecto}"
+
+2. 💰 ACTUALIZAR PROPUESTA ECONÓMICA:
+   - Buscar: "$8,500" → Reemplazar por: "$${parseInt(data.inversion).toLocaleString()}"
+   - Buscar: "$7,225" → Reemplazar por: "$${(data.inversion * 0.85).toLocaleString()}"
+
+3. 📊 AJUSTAR CALCULADORA ROI:
+   - employees value="${data.empleados}"
+   - projects value="${data.proyectos}"
+   - hours value="${data.horas}"
+   - hourRate value="${data.costoHora}"
+   - efficiency value="${data.eficiencia}"
+
+4. 🛠️ ACTUALIZAR STACK TECNOLÓGICO:
+   - Reemplazar tecnologías en la sección technology con: ${data.tecnologias}
+
+5. 📅 CALCULAR NUEVOS VALORES:
+   - Costo anual: $${(data.horas * 52 * data.costoHora).toLocaleString()}
+   - Ahorro proyectado: $${(data.horas * 52 * data.costoHora * data.eficiencia/100).toLocaleString()}
+   - ROI: ${Math.round(((data.horas * 52 * data.costoHora * data.eficiencia/100 - data.inversion) / data.inversion * 100))}%
+
+6. 🎨 LOGO:
+   - Reemplazar logo-innovamanager.svg con el logo de ${data.cliente}
+            `;
+            
+            document.getElementById('changesList').textContent = instructions;
+            document.getElementById('instructions').style.display = 'block';
+            document.getElementById('instructions').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Inicializar con valores por defecto
+        updateDefaults();
+    </script>
+</body>
+</html>

@@ -64,9 +64,9 @@
         }
         
         .logo {
-            width: 280px;
+            width: 350px;
             height: auto;
-            margin: 0 auto 15px;
+            margin: 0 auto 20px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -84,7 +84,12 @@
             height: auto;
             object-fit: contain;
             transition: transform 0.3s ease;
-            filter: drop-shadow(0 8px 25px rgba(30, 58, 138, 0.2));
+            filter: drop-shadow(0 12px 35px rgba(30, 58, 138, 0.4));
+        }
+        
+        .logo:hover img {
+            transform: scale(1.05);
+            filter: drop-shadow(0 15px 45px rgba(30, 58, 138, 0.5));
         }
         
         .logo:hover img {
@@ -121,14 +126,14 @@
         }
         
         .slogan {
-            color: #2d5016;
+            color: #4a7c23;
             font-size: 1.1em;
             font-weight: 600;
             margin: 10px auto 35px;
             font-style: italic;
             letter-spacing: 0.8px;
             animation: fadeIn 1s ease-out 0.4s both;
-            text-shadow: 0 1px 3px rgba(45, 80, 22, 0.15);
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
             position: relative;
             max-width: 400px;
             line-height: 1.4;
@@ -319,7 +324,7 @@
             }
             
             .logo {
-                width: 220px;
+                width: 280px;
             }
             
             .option-card {
@@ -351,6 +356,10 @@
             
             .slogan {
                 font-size: 1em;
+            }
+            
+            .logo {
+                width: 260px;
             }
         }
     </style>

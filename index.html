@@ -5,8 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>InnovaManager - Portal de Acceso</title>
     <style>
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #3b82f6;
+            --accent: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --dark: #1f2937;
+            --light: #f3f4f6;
+            --white: #ffffff;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+        }
+
         body {
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
@@ -17,38 +30,111 @@
         }
         
         .portal-container {
-            background: white;
-            border-radius: 20px;
+            background: var(--white);
+            border-radius: 24px;
             padding: 50px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
             text-align: center;
-            max-width: 600px;
+            max-width: 700px;
             width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .portal-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.05) 0%, transparent 70%);
+            animation: pulse 6s ease-in-out infinite;
+            z-index: 0;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.1); opacity: 0.1; }
+        }
+        
+        .portal-container > * {
+            position: relative;
+            z-index: 1;
         }
         
         .logo {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
-            border-radius: 50%;
-            margin: 0 auto 30px;
+            width: 200px;
+            height: 60px;
+            margin: 0 auto 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 2.5em;
+        }
+        
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 8px rgba(30, 58, 138, 0.3));
         }
         
         h1 {
-            color: #1e3a8a;
+            color: var(--primary);
             margin-bottom: 10px;
             font-size: 2.5em;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            animation: slideInDown 0.8s ease-out;
+        }
+        
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         .subtitle {
-            color: #6b7280;
-            margin-bottom: 50px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
             font-size: 1.2em;
+            font-weight: 500;
+            animation: slideInUp 0.8s ease-out 0.2s both;
+        }
+        
+        .slogan {
+            color: var(--secondary);
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 50px;
+            font-style: italic;
+            letter-spacing: 0.5px;
+            animation: fadeIn 1s ease-out 0.4s both;
+            background: linear-gradient(45deg, var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         
         .access-options {
@@ -67,69 +153,202 @@
         }
         
         .option-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-            border-color: #3b82f6;
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.15);
+            border-color: var(--secondary);
+            background: linear-gradient(135deg, #f8faff, #e6f0ff);
+        }
+        
+        .option-card:active {
+            transform: translateY(-2px);
+            transition: transform 0.1s;
         }
         
         .option-icon {
-            font-size: 3em;
+            font-size: 3.5em;
             margin-bottom: 20px;
+            filter: drop-shadow(0 4px 8px rgba(59, 130, 246, 0.2));
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-5px);
+            }
+            60% {
+                transform: translateY(-3px);
+            }
+        }
+        
+        .option-card:hover .option-icon {
+            animation: pulse 1s infinite;
         }
         
         .option-title {
-            color: #1e3a8a;
+            color: var(--primary);
             font-size: 1.4em;
-            font-weight: bold;
+            font-weight: 700;
             margin-bottom: 15px;
+            letter-spacing: -0.3px;
         }
         
         .option-description {
-            color: #6b7280;
+            color: var(--text-secondary);
             font-size: 1em;
             line-height: 1.6;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
         
         .btn {
-            background: linear-gradient(135deg, #3b82f6, #1e3a8a);
-            color: white;
-            padding: 12px 30px;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: var(--white);
+            padding: 14px 32px;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-decoration: none;
             display: inline-block;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
         }
         
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 24px rgba(59, 130, 246, 0.4);
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn:active {
+            transform: translateY(-1px) scale(1.01);
+            transition: transform 0.1s;
         }
         
         .btn-secondary {
-            background: linear-gradient(135deg, #10b981, #059669);
+            background: linear-gradient(135deg, var(--accent), #047857);
+        }
+        
+        .btn-secondary:hover {
+            box-shadow: 0 12px 24px rgba(16, 185, 129, 0.4);
         }
         
         .footer-info {
-            background: #f8fafc;
-            padding: 25px;
-            border-radius: 15px;
-            margin-top: 30px;
+            background: linear-gradient(135deg, var(--light), #ffffff);
+            padding: 30px;
+            border-radius: 20px;
+            margin-top: 40px;
             text-align: left;
-            color: #374151;
+            color: var(--text-primary);
             font-size: 0.95em;
+            border: 2px solid #e5e7eb;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .footer-info:hover {
+            border-color: var(--secondary);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.1);
+        }
+        
+        .footer-info h3 {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+        
+        .contact-item {
+            padding: 8px 0;
+            transition: all 0.2s;
+            border-radius: 6px;
+            padding-left: 10px;
+            margin: 5px 0;
+        }
+        
+        .contact-item:hover {
+            background: rgba(59, 130, 246, 0.05);
+            transform: translateX(5px);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .portal-container {
+                padding: 30px 20px;
+                margin: 10px;
+                max-width: 100%;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .logo {
+                width: 160px;
+                height: 48px;
+            }
+            
+            .option-card {
+                padding: 20px;
+            }
+            
+            .footer-info {
+                padding: 20px;
+                font-size: 0.9em;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .portal-container {
+                padding: 20px 15px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .subtitle {
+                font-size: 1.1em;
+            }
+            
+            .slogan {
+                font-size: 1em;
+            }
         }
     </style>
 </head>
 <body>
     <div class="portal-container">
-        <div class="logo">🚀</div>
+        <div class="logo">
+            <img src="logo-innovamanager.svg" alt="InnovaManager Logo" onerror="this.src='logo.png'">
+        </div>
         <h1>InnovaManager for ADSO</h1>
-        <p class="subtitle">"Innovación y gestión en un mismo lugar"</p>
+        <p class="subtitle">Plataforma de Gestión Innovadora</p>
+        <p class="slogan">"Innovación y gestión en un mismo lugar"</p>
         
         <div class="access-options">
             <!-- Opción para clientes con código -->
@@ -154,14 +373,16 @@
         </div>
         
         <div class="footer-info">
-            <h3 style="color: #1e3a8a; margin-bottom: 15px;">📞 Información de Contacto</h3>
-            <p><strong>¿Primera vez aquí?</strong> Contacta a nuestro equipo comercial:</p>
-            <p>📧 <strong>Email:</strong> comercial@innovamanager.com</p>
-            <p>📱 <strong>WhatsApp:</strong> +57 300 123 4567</p>
-            <p>☎️ <strong>Teléfono:</strong> +57 (1) 234-5678</p>
-            <hr style="margin: 20px 0; border: 1px solid #e5e7eb;">
-            <p style="font-size: 0.9em; color: #6b7280;">
-                <strong>Nota:</strong> Las presentaciones con código contienen información comercial personalizada según los requerimientos discutidos en reuniones previas.
+            <h3>📞 Información de Contacto</h3>
+            <p style="margin-bottom: 20px;"><strong>¿Primera vez aquí?</strong> Contacta a nuestro equipo comercial:</p>
+            
+            <div class="contact-item">📧 <strong>Email:</strong> comercial@innovamanager.com</div>
+            <div class="contact-item">📱 <strong>WhatsApp:</strong> +57 300 123 4567</div>
+            <div class="contact-item">☎️ <strong>Teléfono:</strong> +57 (1) 234-5678</div>
+            
+            <hr style="margin: 25px 0; border: 1px solid #e5e7eb; opacity: 0.5;">
+            <p style="font-size: 0.9em; color: var(--text-secondary); line-height: 1.6;">
+                <strong>💡 Nota:</strong> Las presentaciones con código contienen información comercial personalizada según los requerimientos discutidos en reuniones previas.
             </p>
         </div>
     </div>

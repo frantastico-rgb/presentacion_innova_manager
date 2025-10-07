@@ -232,12 +232,91 @@
         }
 
         .deliverable-item::before {
-            content: '✓';
+            content: '';
             position: absolute;
             left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0%200%2024%2024'><path fill='%2310b981' d='M9%2016.2L4.8%2012l-1.4%201.4L9%2019%2021%207l-1.4-1.4z'/></svg>");
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        .deliverable-item .sub-info {
+            margin-top: 6px;
+            margin-left: 6px;
+            color: #6b7280;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        /* Accordion styles for subphases */
+        .accordion {
+            margin-top: 10px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .accordion-item {
+            border-top: 1px solid #eef2f7;
+            background: transparent;
+        }
+
+        .accordion-button {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 14px 20px;
+            background: transparent;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary);
+            transition: background 0.15s;
+        }
+
+        .accordion-button:hover {
+            background: rgba(59,130,246,0.03);
+        }
+
+        .accordion-icon {
+            width: 28px;
+            height: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
             color: var(--accent);
-            font-weight: bold;
-            font-size: 1.2em;
+            font-size: 1.1em;
+        }
+
+        .accordion-content {
+            padding: 12px 20px 20px 56px;
+            display: none;
+            color: #374151;
+            background: rgba(0,0,0,0.02);
+        }
+
+        .accordion-content.show {
+            display: block;
+        }
+
+        .accordion-caret {
+            margin-left: auto;
+            width: 22px;
+            height: 22px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.18s ease;
+            color: #6b7280;
+        }
+
+        .accordion-caret.rotate {
+            transform: rotate(90deg);
         }
 
         .metrics-grid {
@@ -875,7 +954,7 @@
                     <!-- Fase 2 -->
                     <div class="phase-card">
                         <div class="phase-header">
-                            <div class="phase-title">Fase 2: Desarrollo y Pruebas</div>
+                            <div class="phase-title">Fase 2: Desarrollo y Pruebas: Construcción de Software</div>
                             <div class="phase-duration">6 Semanas</div>
                         </div>
                         <div class="phase-team">
@@ -889,6 +968,8 @@
                             <div class="deliverable-item">Integración con bases de datos MySQL y MongoDB</div>
                             <div class="deliverable-item">API REST documentada</div>
                             <div class="deliverable-item">Evidencias de pruebas (JUnit + Postman)</div>
+                            <div class="deliverable-item">README del proyecto</div>
+                            <div class="deliverable-item">Pruebas y calidad</div>
                         </div>
                     </div>
 
@@ -899,37 +980,76 @@
                             <div class="phase-duration">4 Semanas</div>
                         </div>
                         <div class="phase-team">
-                            <span class="team-label">DevOps:</span> Michael, Jhon, Juan Aguirre<br>
-                            <span class="team-label">Documentación:</span> María Paula, Laura, David, Deiber
+                            <span class="team-label">Descripción:</span> Esta fase se divide en subfases enfocadas en instalación, integración, despliegue y documentación de usuario.
                         </div>
+
                         <div class="deliverables">
-                            <h4>Entregables:</h4>
-                            <div class="deliverable-item">Sistema desplegado en la nube</div>
-                            <div class="deliverable-item">Configuración de SSL y seguridad</div>
-                            <div class="deliverable-item">Sistema de backups automatizados</div>
-                            <div class="deliverable-item">Manual de usuario y administrador</div>
-                            <div class="deliverable-item">Capacitación al equipo de Ingenieriapp</div>
+                            <h4>Subfases y Entregables:</h4>
+                            <div class="accordion" id="phase3-accordion">
+                                <div class="accordion-item">
+                                    <button class="accordion-button" type="button" data-target="acc-31" onclick="toggleAccordion(event)">
+                                        <span class="accordion-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="14" height="14" rx="2" fill="#10b981"/><path d="M7 8h8v2H7z" fill="white" opacity="0.9"/></svg></span>
+                                        3.1 — Manual de instalación (README.md)
+                                        <span class="accordion-caret"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7z" fill="#6b7280"/></svg></span>
+                                    </button>
+                                    <div id="acc-31" class="accordion-content">
+                                        <div class="sub-info">Programadores: Damián y su combo. Documento breve en GitHub con pasos para instalar y ejecutar la aplicación. Enfoque técnico y directo para levantar la app rápido.</div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion-item">
+                                    <button class="accordion-button" type="button" data-target="acc-32" onclick="toggleAccordion(event)">
+                                        <span class="accordion-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 7h6v2H7zM7 15h6v2H7z" fill="#10b981"/><path d="M17 7l4 4-4 4V7z" fill="#10b981"/></svg></span>
+                                        3.2 — Integración con Git
+                                        <span class="accordion-caret"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7z" fill="#6b7280"/></svg></span>
+                                    </button>
+                                    <div id="acc-32" class="accordion-content">
+                                        <div class="sub-info">Programadores: María Paula, Laura, David, Deiber. Integración con repositorio Git: ramas, workflows básicos y buenas prácticas de commits.</div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion-item">
+                                    <button class="accordion-button" type="button" data-target="acc-33" onclick="toggleAccordion(event)">
+                                        <span class="accordion-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19 18H6a4 4 0 010-8c.2 0 .4 0 .6.05A6 6 0 1120 16c-.3 0-.6 0-1 .04V16c0 1.1-.9 2-2 2z" fill="#10b981"/></svg></span>
+                                        3.3 — Despliegue de producción en la nube
+                                        <span class="accordion-caret"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7z" fill="#6b7280"/></svg></span>
+                                    </button>
+                                    <div id="acc-33" class="accordion-content">
+                                        <div class="sub-info">Programadores: Michael, Jhon, Juan Aguirre. Versión desplegada en la nube (ej. Railway, Heroku, Render). Configuración de variables de entorno, builds y despliegue continuo si aplica.</div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion-item">
+                                    <button class="accordion-button" type="button" data-target="acc-34" onclick="toggleAccordion(event)">
+                                        <span class="accordion-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="6" width="18" height="12" rx="2" fill="#10b981"/><path d="M10 9v6l5-3-5-3z" fill="white"/></svg></span>
+                                        3.4 — Manual de usuario y video de uso
+                                        <span class="accordion-caret"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7z" fill="#6b7280"/></svg></span>
+                                    </button>
+                                    <div id="acc-34" class="accordion-content">
+                                        <div class="sub-info">Programador: Fernando. Manual de usuario, guías rápidas y video demostrativo de uso. Incluye manual de instalación complementario si es necesario.</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
                     </div>
 
                     <!-- Fase 4 -->
                     <div class="phase-card">
                         <div class="phase-header">
-                            <div class="phase-title">Fase 4: Soporte y Garantía</div>
+                            <div class="phase-title">Fase 4: Capacitación y Entrega</div>
                             <div class="phase-duration">3 Semanas</div>
                         </div>
                         <div class="phase-team">
-                            <span class="team-label">Capacitación:</span> Jefry<br>
-                            <span class="team-label">Presentación:</span> Francisco<br>
-                            <span class="team-label">Manuales:</span> Fernando
+                            <span class="team-label">Capacitación:</span> Jefry
                         </div>
                         <div class="deliverables">
                             <h4>Entregables:</h4>
-                            <div class="deliverable-item">Soporte técnico 24/7 durante 3 meses</div>
-                            <div class="deliverable-item">Correcciones y ajustes sin costo adicional</div>
-                            <div class="deliverable-item">Monitoreo de rendimiento y optimizaciones</div>
-                            <div class="deliverable-item">Documentación técnica completa</div>
-                            <div class="deliverable-item">Plan de mantenimiento a largo plazo</div>
+                            <div class="deliverable-item">Capacitación</div>
+                            <div class="deliverable-item">Alcances del contrato</div>
+                            <div class="deliverable-item">Servicio Postventa</div>
+                            <div class="deliverable-item">Acta de entrega</div>
+                            <div class="deliverable-item">Licencia de uso</div>
                         </div>
                     </div>
                 </div>
@@ -1401,7 +1521,46 @@
                     calculateROI();
                 });
             });
+
+            // Ensure accordion buttons work with keyboard and initial setup
+            document.querySelectorAll('.accordion-button').forEach(btn => {
+                btn.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        toggleAccordion({ target: btn });
+                    }
+                });
+            });
         });
+
+        // Accordion toggle function
+        function toggleAccordion(event) {
+            // support being called with event or an object containing target
+            const btn = event.target && event.target.classList && event.target.classList.contains('accordion-button') ? event.target : (event.currentTarget || event.target.closest && event.target.closest('.accordion-button'));
+            if (!btn) return;
+            const targetId = btn.getAttribute('data-target');
+            const content = document.getElementById(targetId);
+            if (!content) return;
+
+            // Close other contents in the same accordion and reset carets
+            const accordion = btn.closest('.accordion');
+            if (accordion) {
+                accordion.querySelectorAll('.accordion-content').forEach(c => {
+                    if (c.id !== targetId) c.classList.remove('show');
+                });
+                // reset other carets
+                accordion.querySelectorAll('.accordion-caret').forEach(caret => {
+                    if (caret !== btn.querySelector('.accordion-caret')) caret.classList.remove('rotate');
+                });
+            }
+
+            // Toggle this content and caret
+            const isShown = content.classList.toggle('show');
+            const caret = btn.querySelector('.accordion-caret');
+            if (caret) {
+                if (isShown) caret.classList.add('rotate'); else caret.classList.remove('rotate');
+            }
+        }
 
         // Add smooth scrolling and other enhancements
         document.querySelectorAll('.feature-item').forEach(item => {

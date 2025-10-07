@@ -56,9 +56,21 @@
     </div>
 
     <div class="cta">
-      <a class="btn" href="/SOCIAL_IMPACT.md">Ver plan completo</a>
-      <div style="margin-top:12px" class="muted">También disponible como documento en el repositorio.</div>
+      <a class="btn" href="/SOCIAL_IMPACT.md" target="_blank">Ver plan completo</a>
+      <a class="btn" href="#" onclick="window.print();return false;" style="margin-left:12px; background:#065f46">Descargar PDF</a>
+      <div style="margin-top:12px" class="muted">También disponible como documento en el repositorio. Usa 'Descargar PDF' para guardar una copia desde tu navegador.</div>
     </div>
   </div>
+  <script>
+    // Small helper: improve print styles (simple)
+    (function(){
+      var css = '@media print { body{background:#fff;} .container{box-shadow:none; margin:0; border-radius:0} .btn{display:none} }';
+      var head = document.head || document.getElementsByTagName('head')[0];
+      var style = document.createElement('style');
+      style.type = 'text/css';
+      if (style.styleSheet){ style.styleSheet.cssText = css; } else { style.appendChild(document.createTextNode(css)); }
+      head.appendChild(style);
+    })();
+  </script>
 </body>
 </html>
